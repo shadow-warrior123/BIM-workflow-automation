@@ -1,0 +1,64 @@
+# navigation.py
+
+import customtkinter as ctk
+import subprocess
+import sys
+from tkinter import messagebox
+
+def run_combined_process():
+    script_path = r"C:\\path\\to\\combined_process.py"  # Update this path to the correct location of your combined_process.py file
+    try:
+        result = subprocess.run([sys.executable, script_path], check=True, capture_output=True, text=True)
+        print(f"Successfully ran {script_path}")
+        print(result.stdout)
+        messagebox.showinfo("Success", "Combined process executed successfully.")
+    except subprocess.CalledProcessError as e:
+        print(f"Error running {script_path}")
+        print(e.stderr)
+        messagebox.showerror("Error", f"Error running combined process: {e.stderr}")
+
+def create_navigation_frame(root, logo_image, toggle_theme, select_frame):
+    navigation_frame = ctk.CTkFrame(root, corner_radius=0, width=200, fg_color=("#D4D4D4","#323232"))
+    navigation_frame.grid(row=0, column=0, sticky="nsew")
+    root.grid_rowconfigure(0, weight=1)
+
+    navigation_frame_label = ctk.CTkLabel(navigation_frame, text="   Ladybug", image=logo_image,
+                                          compound="left", font=ctk.CTkFont(size=15, weight="bold"))
+    navigation_frame_label.grid(row=0, column=0, padx=20, pady=20)
+
+    home_button = create_nav_button(navigation_frame, "Home", lambda: select_frame("home"))
+    reformat_button = create_nav_button(navigation_frame, "Reformat", lambda: select_frame("reformat"))
+    split_data_button = create_nav_button(navigation_frame, "Split Data", lambda: select_frame("split_data"))
+    unit_prices_button = create_nav_button(navigation_frame, "Unit Prices", lambda: select_frame("unit_prices"))
+    concrete_mix_button = create_nav_button(navigation_frame, "Concrete Mix", lambda: select_frame("concrete_mix"))
+    excel_processing_button = create_nav_button(navigation_frame, "Excel Processing", lambda: select_frame("excel_processing"))
+    quantity_calc_button = create_nav_button(navigation_frame, "Quantity Calculation", lambda: select_frame("quantity_calc"))
+    combined_process_button = create_nav_button(navigation_frame, "Run Combined Process", run_combined_process)
+
+    home_button.grid(row=1, column=0, sticky="ew", padx=20, pady=5)
+    reformat_button.grid(row=2, column=0, sticky="ew", padx=20, pady=5)
+    split_data_button.grid(row=3, column=0, sticky="ew", padx=20, pady=5)
+    unit_prices_button.grid(row=4, column=0, sticky="ew", padx=20, pady=5)
+    concrete_mix_button.grid(row=5, column=0, sticky="ew", padx=20, pady=5)
+    excel_processing_button.grid(row=6, column=0, sticky="ew", padx=20, pady=5)
+    quantity_calc_button.grid(row=7, column=0, sticky="ew", padx=20, pady=5)
+    combined_process_button.grid(row=8, column=0, sticky="ew", padx=20, pady=5)
+
+    navigation_frame.grid_rowconfigure(98, weight=1)
+
+    def quit_app():
+        root.quit()
+
+    quit_button = ctk.CTkButton(navigation_frame, text="Quit", command=quit_app, fg_color="#BA0B13", hover_color="#94070D")
+    quit_button.grid(row=99, column=0, padx=20, pady=(10,30), sticky="ew")
+
+    theme_toggle_switch = ctk.CTkSwitch(navigation_frame, text="Dark Mode", command=toggle_theme)
+    theme_toggle_switch.grid(row=98, column=0, padx=20, pady=10, sticky="sew")
+
+    return home_button, reformat_button, split_data_button, unit_prices_button, concrete_mix_button, excel_processing_button, quantity_calc_button, combined_process_button, theme_toggle_switch, quit_button
+
+def create_nav_button(parent, text, command):
+    button = ctk.CTkButton(parent, corner_radius=6, height=40, border_spacing=10, text=text,
+                           fg_color="transparent", text_color=("gray10", "gray90"), hover_color=("gray70", "gray30"), anchor="w", command=command)
+    button.grid(sticky="ew")
+    return button

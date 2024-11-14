@@ -1,0 +1,211 @@
+{
+  "Uuid": "89af72b3-e0c1-4d0f-bd47-4a366eb8f2d2",
+  "IsCustomNode": false,
+  "Description": "",
+  "Name": "master_script",
+  "ElementResolver": {
+    "ResolutionMap": {}
+  },
+  "Inputs": [],
+  "Outputs": [],
+  "Nodes": [
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "Code": "import clr\r\nclr.AddReference('ProtoGeometry')\r\nfrom Autodesk.DesignScript.Geometry import *\r\nclr.AddReference(\"DSCoreNodes\")\r\nimport DSCore\r\nfrom DSCore import *\r\n\r\n# Import system libraries\r\nimport sys\r\nimport subprocess\r\n\r\n# DynamoPlayer path (adjust based on your installation)\r\ndynamo_player_path = r\"C:\\Program Files\\Dynamo\\Dynamo Core\\2\\DynamoPlayer\\DynamoPlayer.exe\"\r\n\r\n# Function to run a Dynamo script\r\ndef run_script(script_path):\r\n    command = f'\"{dynamo_player_path}\" -o \"{script_path}\"'\r\n    process = subprocess.Popen(command, shell=True)\r\n    process.wait()\r\n    return process.returncode\r\n\r\n# Get the list of scripts from input\r\nscript_paths = IN[0]\r\n\r\n# Execute each script in the list\r\nresults = []\r\nfor path in script_paths:\r\n    result = run_script(path)\r\n    results.append(result)\r\n\r\nOUT = results\r\n",
+      "Engine": "CPython3",
+      "VariableInputPorts": true,
+      "Id": "bebc6df64e364d40956e9745615461fb",
+      "NodeType": "PythonScriptNode",
+      "Inputs": [
+        {
+          "Id": "d78363d9145d4ea6bcde14d65cbe2ab8",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "a90ba96198e24cd0be9ff2f7e9bdd554",
+          "Name": "IN[1]",
+          "Description": "Input #1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "bb3c6bc9c9304e0791625e515d46e0ab",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded Python script."
+    },
+    {
+      "ConcreteType": "CoreNodeModels.Input.Filename, CoreNodeModels",
+      "Id": "e9a63b462a114b6c9b73123c314aff06",
+      "NodeType": "ExtensionNode",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "1fcc24cda06e4b8d921a6e78816ee20c",
+          "Name": "",
+          "Description": "File Path",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows you to select a file on the system and returns its file path",
+      "HintPath": "C:\\Users\\f2021\\Downloads\\New folder (1)-20240810T142406Z-001\\New folder (1)\\quantity-estimator-main (2)\\revit script\\revit data.dyn",
+      "InputValue": "C:\\Users\\f2021\\Downloads\\New folder (1)-20240810T142406Z-001\\New folder (1)\\quantity-estimator-main (2)\\revit script\\revit data.dyn"
+    },
+    {
+      "ConcreteType": "CoreNodeModels.Input.Filename, CoreNodeModels",
+      "Id": "d9c459cd67084cbea5b9f0c269681796",
+      "NodeType": "ExtensionNode",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "f81ec05b859d4b6bae268bef30d4cc40",
+          "Name": "",
+          "Description": "File Path",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows you to select a file on the system and returns its file path",
+      "HintPath": "C:\\Users\\f2021\\Downloads\\New folder (1)-20240810T142406Z-001\\New folder (1)\\quantity-estimator-main (2)\\revit script\\material takeoff.dyn",
+      "InputValue": "C:\\Users\\f2021\\Downloads\\New folder (1)-20240810T142406Z-001\\New folder (1)\\quantity-estimator-main (2)\\revit script\\material takeoff.dyn"
+    }
+  ],
+  "Connectors": [
+    {
+      "Start": "1fcc24cda06e4b8d921a6e78816ee20c",
+      "End": "d78363d9145d4ea6bcde14d65cbe2ab8",
+      "Id": "551af48a864146fba42008344e7d5a58",
+      "IsHidden": "False"
+    },
+    {
+      "Start": "f81ec05b859d4b6bae268bef30d4cc40",
+      "End": "a90ba96198e24cd0be9ff2f7e9bdd554",
+      "Id": "13ae7c390997431384b2209e44027be0",
+      "IsHidden": "False"
+    }
+  ],
+  "Dependencies": [],
+  "NodeLibraryDependencies": [
+    {
+      "Name": "revit data.dyn",
+      "ReferenceType": "External",
+      "Nodes": [
+        "e9a63b462a114b6c9b73123c314aff06"
+      ]
+    },
+    {
+      "Name": "material takeoff.dyn",
+      "ReferenceType": "External",
+      "Nodes": [
+        "d9c459cd67084cbea5b9f0c269681796"
+      ]
+    }
+  ],
+  "EnableLegacyPolyCurveBehavior": true,
+  "Thumbnail": "",
+  "GraphDocumentationURL": null,
+  "ExtensionWorkspaceData": [
+    {
+      "ExtensionGuid": "28992e1d-abb9-417f-8b1b-05e053bee670",
+      "Name": "Properties",
+      "Version": "3.0",
+      "Data": {}
+    },
+    {
+      "ExtensionGuid": "DFBD9CC0-DB40-457A-939E-8C8555555A9D",
+      "Name": "Generative Design",
+      "Version": "7.1",
+      "Data": {}
+    }
+  ],
+  "Author": "",
+  "Linting": {
+    "activeLinter": "None",
+    "activeLinterId": "7b75fb44-43fd-4631-a878-29f4d5d8399a",
+    "warningCount": 0,
+    "errorCount": 0
+  },
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 1.0,
+      "HasRunWithoutCrash": true,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "3.2.1.5366",
+      "RunType": "Automatic",
+      "RunPeriod": "1000"
+    },
+    "Camera": {
+      "Name": "_Background Preview",
+      "EyeX": -17.0,
+      "EyeY": 24.0,
+      "EyeZ": 50.0,
+      "LookX": 12.0,
+      "LookY": -13.0,
+      "LookZ": -58.0,
+      "UpX": 0.0,
+      "UpY": 1.0,
+      "UpZ": 0.0
+    },
+    "ConnectorPins": [],
+    "NodeViews": [
+      {
+        "Id": "bebc6df64e364d40956e9745615461fb",
+        "Name": "Python Script",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "ShowGeometry": true,
+        "X": 239.4674514856552,
+        "Y": 270.8225526620013
+      },
+      {
+        "Id": "e9a63b462a114b6c9b73123c314aff06",
+        "Name": "File Path",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "ShowGeometry": true,
+        "X": -458.61480123418374,
+        "Y": 169.57388577392035
+      },
+      {
+        "Id": "d9c459cd67084cbea5b9f0c269681796",
+        "Name": "File Path",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "ShowGeometry": true,
+        "X": -503.15683759870194,
+        "Y": 389.9794254551627
+      }
+    ],
+    "Annotations": [],
+    "X": 285.5190165727003,
+    "Y": 61.750465341246255,
+    "Zoom": 0.7082312500000001
+  }
+}
